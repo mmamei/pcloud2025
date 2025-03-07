@@ -12,6 +12,38 @@
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+		<script>
+			google.charts.load('current', {packages: ['corechart', 'line']});
+			google.charts.setOnLoadCallback(drawBasic);
+
+			function drawBasic() {
+
+				var data = new google.visualization.DataTable();
+				data.addColumn('number', 'X');
+				data.addColumn('number', 'Sensor');
+				
+				d = []
+				for (i=0; i<10; i++) {
+					d.push([i, Math.random()*100])
+				}
+
+				data.addRows(d);
+
+				var options = {
+					hAxis: {
+					title: 'Time'
+					},
+					vAxis: {
+					title: 'Sensor Data'
+					}
+				};
+
+				var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+
+				chart.draw(data, options);
+				}
+		</script>
 	</head>
 	<body class="is-preload">
 
@@ -29,7 +61,7 @@
 						</header>
 						<div class="content">
 							<p><br><br><br><br><br><br><strong>Grafici</strong></p>
-							ciao
+							<div id="chart_div"></div>
 						</div>
 					</section>
 
