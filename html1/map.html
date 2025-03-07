@@ -12,6 +12,22 @@
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"/>
+		<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.scrolly.min.js"></script>
+		<script src="assets/js/browser.min.js"></script>
+		<script src="assets/js/breakpoints.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<!-- 	-->
+		<script>
+			$(document).ready(function(){
+				// https://storage.googleapis.com/connessioni.appspot.com/map.json
+				var map = L.map('mapid').setView([51.505, -0.09], 13);
+				L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+				new L.Polyline([new L.LatLng(51.5, -0.09), new L.LatLng(51.4, -0.09), new L.LatLng(51.4, -0.19)], {color: 'red',weight: 3,opacity: 0.5,smoothFactor: 1}).addTo(map)
+			})
+		</script>
 	</head>
 	<body class="is-preload">
 
@@ -21,27 +37,18 @@
 				<!-- Intro -->
 					<section class="intro">
 						<header>
-							<h1>App</h1>
+							<h1>Map</h1>
 							<p>A free responsive site template designed by <a href="https://twitter.com/ajlkn">@ajlkn</a> / <a href="https://html5up.net">HTML5 UP</a></p>
 							<ul class="actions">
 								<li><a href="#first" class="arrow scrolly"><span class="label">Next</span></a></li>
 							</ul>
 						</header>
 						<div class="content">
-							<p><br><br><br><br><br><br><strong>Login</strong></p>
-							<form action="map.html" method="post">
-								<div class="fields">
-									<div class="field half">
-										<input type="text" name="name" id="name" placeholder="Name" />
-									</div>
-									<div class="field half">
-										<input type="password" name="password" id="password" placeholder="Password" />
-									</div>
-								</div>
-								<ul class="actions">
-									<li><input type="submit" value="Login" class="button primary" /></li>
-								</ul>
-							</form>
+							<p><br><br><br><br><br><br><strong>Map</strong></p>
+							
+							<div id="mapid" style="width: 600px; height: 400px;"></div>
+							
+							
 						</div>
 					</section>
 
@@ -67,12 +74,6 @@
 			</div>
 
 		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
-
+		<script src="assets/js/main.js"></script>
 	</body>
 </html>
