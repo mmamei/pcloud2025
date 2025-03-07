@@ -3,7 +3,7 @@
 $(document).ready(function(){
     $('#btn').click(function(){
 
-        var data = 'sensor1, 10\nsensor2, 40\nsensor3, 70\nsensor1, 100'
+        var data = $('#message').val() //'sensor1, 10\nsensor2, 40\nsensor3, 70\nsensor1, 100'
         var d = {}
         
         for (var line of data.split('\n')) {
@@ -15,8 +15,12 @@ $(document).ready(function(){
             }
             d[sensor].push(Number(value))
         }
-        
-        $("#d1").html(JSON.stringify(d))
+        txt = ''
+        for (var key in d) {
+            txt += key + ' ---> ' + d[key] + '<br>'
+        }
+
+        $("#d1").html(txt)
         
 
 
