@@ -21,11 +21,22 @@
 		<script src="assets/js/util.js"></script>
 		<!-- 	-->
 		<script>
+			
 			$(document).ready(function(){
 				// https://storage.googleapis.com/connessioni.appspot.com/map.json
-				var map = L.map('mapid').setView([51.505, -0.09], 13);
+				var map = L.map('mapid').setView([44.6,10.7], 8);
 				L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-				new L.Polyline([new L.LatLng(51.5, -0.09), new L.LatLng(51.4, -0.09), new L.LatLng(51.4, -0.19)], {color: 'red',weight: 3,opacity: 0.5,smoothFactor: 1}).addTo(map)
+				//new L.Polyline([new L.LatLng(51.5, -0.09), new L.LatLng(51.4, -0.09), new L.LatLng(51.4, -0.19)], {color: 'red',weight: 3,opacity: 0.5,smoothFactor: 1}).addTo(map)
+
+				$.get("https://storage.googleapis.com/connessioni.appspot.com/map.json",function(data, status){
+					//console.log(data)
+					map.setView(data[0], 12)
+					for(p of data) {
+						console.log(p)
+						L.marker(p).addTo(map).bindPopup('<a href="graph.html">dati</a>')
+					}
+				});
+
 			})
 		</script>
 	</head>
