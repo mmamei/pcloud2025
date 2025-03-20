@@ -2,4 +2,5 @@ requests
 python-telegram-bot
 # pip install --upgrade apscheduler pytz tzlocal
 
+google-cloud-storage
 
