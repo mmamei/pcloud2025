@@ -1,0 +1,24 @@
+
+# installazione di python3 e pip3
+
+sudo apt install python3-pip
+
+# installazione del tool per creare un ambiente virtuale
+
+sudo apt install python3.11-venv
+
+# creazione di un ambiente virtuale
+
+sudo python3 -m venv venv
+
+# attivazione dell'ambiente virtuale
+
+source ./venv/bin/activate
+
+# installazione delle librerie necessarie
+
+sudo ./venv/bin/pip3 install python-telegram-bot
+
+# faccio partire l'applicazoine
+
+python3 main.py
