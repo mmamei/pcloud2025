@@ -1,5 +1,6 @@
 
 from flask import Flask, render_template, request, redirect, url_for
+import json
 
 app = Flask(__name__)
 
@@ -16,11 +17,12 @@ database = {
 
 
 # parameters in the url
-@app.route('/urlpar/<par>',methods=['GET'])
-def urlpar(par):
-    user = {'username': par}
-    list = [1, 2, 3, 4, 5]
-    return render_template('index.html', title='Home', user=user, list=list)
+@app.route('/sensors/<sensor>',methods=['GET'])
+def read(sensor):
+    if sensor not in database:
+        return 'not found', 404
+    x = database[sensor]
+    return json.dumps(x), 200
 
 # http get parameters
 @app.route('/sensors/<sensor>',methods=['POST'])
