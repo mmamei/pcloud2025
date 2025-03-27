@@ -20,14 +20,11 @@
 			function drawBasic() {
 
 				var data = new google.visualization.DataTable();
-				data.addColumn('number', 'X');
+				data.addColumn('string', 'time');
 				data.addColumn('number', 'Sensor');
 				
-				d = []
-				for (i=0; i<10; i++) {
-					d.push([i, Math.random()*100])
-				}
-
+				d = {{data|safe}}
+				
 				data.addRows(d);
 
 				var options = {
@@ -35,7 +32,7 @@
 					title: 'Time'
 					},
 					vAxis: {
-					title: 'Sensor Data'
+					title: '{{sensor}}'
 					}
 				};
 

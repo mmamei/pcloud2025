@@ -20,7 +20,11 @@ def graph(sensor):
     if sensor not in database:
         return 'not found', 404
     x = database[sensor]
-    return render_template('graph.html', data=x)    
+    x2 = []
+    for d in x:
+        x2.append([d['data'], d['val']])
+    x = str(x2)
+    return render_template('graph.html', data=x, sensor=sensor)    
 
 # parameters in the url
 @app.route('/sensors/<sensor>',methods=['GET'])
@@ -34,7 +38,7 @@ def read(sensor):
 @app.route('/sensors/<sensor>',methods=['POST'])
 def new_data(sensor):
     data = request.values['date']
-    val = request.values['val']
+    val = float(request.values['val'])
     if sensor not in database:
         database[sensor] = []
     database[sensor].append({'data':data, 'val':val})
