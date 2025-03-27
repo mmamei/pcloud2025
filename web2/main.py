@@ -15,6 +15,12 @@ database = {
 }
 '''
 
+@app.route('/graph/<sensor>')
+def graph(sensor):
+    if sensor not in database:
+        return 'not found', 404
+    x = database[sensor]
+    return render_template('graph.html', data=x)    
 
 # parameters in the url
 @app.route('/sensors/<sensor>',methods=['GET'])
