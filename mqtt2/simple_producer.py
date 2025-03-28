@@ -15,7 +15,7 @@ client_id = "client1"
 broker_ip = 'broker.emqx.io'
 broker_port = 1883
 
-default_topic = "/test/1"
+default_topic = "/pcloud2025reggioemilia/test/1"
 
 mqtt_client = mqtt.Client(client_id)
 mqtt_client.on_connect = marco_connect

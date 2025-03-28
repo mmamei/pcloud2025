@@ -22,6 +22,19 @@ def home():
 def show():
     return str(database)
 
+@app.route('/off')
+def off():
+    command_topic = '/command/1'
+    infot = mqtt.publish(command_topic, 'OFF', qos=2)
+    return 'ok',200
+
+@app.route('/on')
+def on():
+    command_topic = '/command/1'
+    infot = mqtt.publish(command_topic, 'ON', qos=2)
+    return 'ok',200
+      
+
 # Callback for MQTT message received
 @mqtt.on_message()
 def handle_mqtt_message(client, userdata, message):
