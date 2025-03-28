@@ -6,3 +6,6 @@ google-cloud-storage
 
 flask
 
+paho-mqtt
+flask-mqtt
+
