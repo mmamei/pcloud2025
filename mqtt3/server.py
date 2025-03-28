@@ -11,23 +11,19 @@ import paho.mqtt.client as mqtt
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code " + str(rc))
-    mqtt_client.subscribe(default_topic)
-    print("Subscribed to: " + default_topic)
+    mqtt_client.subscribe(telemetry_topic)
+    print("Subscribed to: " + telemetry_topic)
 
 def on_disconnect(client, userdata, rc):
     print("disConnected with result code ")
 
 
+database = []
+
 # Define a callback method to receive asynchronous messages
 def on_message(client, userdata, message):
-    print(message,userdata)
-    print("\n##########################################################")
-    print("message received: ", str(message.payload.decode("utf-8")))
-    print("message topic=", message.topic)
-    print("message qos=", message.qos)
-    print("message retain flag=", message.retain)
-    print("##########################################################")
-
+    database.append(str(message.payload.decode("utf-8")))
+    
 
 # Configuration variables
 client_id = "subscriber1"
@@ -35,7 +31,8 @@ client_id = "subscriber1"
 broker_ip = 'broker.emqx.io'
 broker_port = 1883
 
-default_topic = "/telemetry/#"
+telemetry_topic = "/telemetry/#"
+command_topic = '/command/1'
 
 # Create a new MQTT Client
 mqtt_client = mqtt.Client(client_id)
@@ -56,7 +53,14 @@ mqtt_client.connect(broker_ip, broker_port, keepalive=600)
 
 mqtt_client.loop_start()
 
-print('ciao')
-input('inserisci qualcosa per terminare')
+while True:
+    c = input('inserisci comando: SHOW, ON, OFF, EN')
+    if c == 'END':
+        break
+    elif c == 'SHOW':
+        print('Database:', database)
+    else:
+        infot = mqtt_client.publish(command_topic, c, qos=2)
+        infot.wait_for_publish()
 
 mqtt_client.loop_stop()

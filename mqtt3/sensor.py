@@ -10,9 +10,17 @@ import time
 # The callback for when the client receives a CONNACK response from the server.
 def my_connect(client, userdata, flags, rc):
     print("Connected with result code " + str(rc))
+    mqtt_client.subscribe(command_topic)
 
 def my_publish(mqttc, obj, mid):
     print("mid: " + str(mid))
+
+def my_message(client, userdata, message):
+    print(message,userdata)
+    print("\n##########################################################")
+    print("message received: ", str(message.payload.decode("utf-8")))
+    print("##########################################################")
+
 
 
 # Full MQTT client creation with all the parameters. The only one mandatory in the ClientId that should be unique
@@ -28,12 +36,14 @@ client_id = "client1"
 broker_ip = 'broker.emqx.io'
 broker_port = 1883
 
-default_topic = "/telemetry/1"
+telemetry_topic = "/telemetry/1"
+command_topic = '/command/1'
 
 
 mqtt_client = mqtt.Client(client_id)
 mqtt_client.on_connect = my_connect
-mqtt_client.on_publish = my_publish
+#mqtt_client.on_publish = my_publish
+mqtt_client.on_message = my_message
 
 print("Connecting to "+ broker_ip + " port: " + str(broker_port))
 #mqtt_client.tls_set()
@@ -48,14 +58,9 @@ mqtt_client.loop_start()
 message_limit = 1000
 for message_id in range(message_limit):
     payload_string = f'message {message_id}'
-    infot = mqtt_client.publish(default_topic, payload_string, qos=0)
-
-    #qos=0  # At most once
-    #qos=1  # At least once
-    #qos=2  # Exactly once
-
+    infot = mqtt_client.publish(telemetry_topic, payload_string, qos=0)
     infot.wait_for_publish()
-    print(f"Message Sent: {message_id} Topic: {default_topic} Payload: {payload_string}")
+    print(f"Message Sent: {message_id}")
     time.sleep(1)
 
 mqtt_client.loop_stop()
