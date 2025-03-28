@@ -6,6 +6,7 @@
 import paho.mqtt.client as mqtt
 import time
 
+run = True
 
 # The callback for when the client receives a CONNACK response from the server.
 def my_connect(client, userdata, flags, rc):
@@ -16,10 +17,12 @@ def my_publish(mqttc, obj, mid):
     print("mid: " + str(mid))
 
 def my_message(client, userdata, message):
-    print(message,userdata)
-    print("\n##########################################################")
-    print("message received: ", str(message.payload.decode("utf-8")))
-    print("##########################################################")
+    global run
+    c = str(message.payload.decode("utf-8"))
+    if c == 'ON':
+        run = True
+    elif c == 'OFF':   
+        run = False 
 
 
 
@@ -56,11 +59,14 @@ mqtt_client.loop_start()
 # MQTT Paho Publish method with all the available parameters
 # mqtt_client.publish(topic, payload=None, qos=0, retain=False)
 message_limit = 1000
-for message_id in range(message_limit):
-    payload_string = f'message {message_id}'
-    infot = mqtt_client.publish(telemetry_topic, payload_string, qos=0)
-    infot.wait_for_publish()
-    print(f"Message Sent: {message_id}")
+message_id = 0
+while True:
+    if run:
+        payload_string = f'message {message_id}'
+        infot = mqtt_client.publish(telemetry_topic, payload_string, qos=0)
+        infot.wait_for_publish()
+        print(f"Message Sent: {message_id}")
+        message_id += 1
     time.sleep(1)
 
 mqtt_client.loop_stop()

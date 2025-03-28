@@ -54,7 +54,7 @@ mqtt_client.connect(broker_ip, broker_port, keepalive=600)
 mqtt_client.loop_start()
 
 while True:
-    c = input('inserisci comando: SHOW, ON, OFF, EN')
+    c = input('inserisci comando: SHOW, ON, OFF, END\n')
     if c == 'END':
         break
     elif c == 'SHOW':
