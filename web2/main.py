@@ -4,7 +4,7 @@ import json
 
 app = Flask(__name__)
 
-database = {}
+database = {'sensor1': [{'data':'27/10/2019', 'val': 23}]}
 '''
 database = {
 'sensor1': [
