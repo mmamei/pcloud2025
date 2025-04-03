@@ -39,7 +39,7 @@ client_id = "client1"
 broker_ip = 'broker.emqx.io'
 broker_port = 1883
 
-telemetry_topic = "/telemetry/1"
+telemetry_topic = "/pcloud2025reggioemilia/test/1"
 command_topic = '/command/1'
 
 
