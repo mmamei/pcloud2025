@@ -3,9 +3,9 @@ python-telegram-bot
 # pip install --upgrade apscheduler pytz tzlocal
 
 google-cloud-storage
+google-cloud-firestore
 
 flask
-
 paho-mqtt
 flask-mqtt
 

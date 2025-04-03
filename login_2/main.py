@@ -24,6 +24,7 @@ class User(UserMixin):
         super().__init__()
         self.id = username
         self.username = username
+        self.carrello_spesa = []
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = secret_key
@@ -62,7 +63,7 @@ def index2():
 @app.route('/login', methods=['POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('/main'))
+        return redirect('/main')
     username = request.values['u']
     password = request.values['p']
     next_page = request.values['next']
