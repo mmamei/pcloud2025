@@ -42,6 +42,7 @@ db = 'test1'
 db = firestore.Client.from_service_account_json('riepilogo1/credentials.json', database=db)
 
 @app.route('/graph/<sensor>')
+@login_required
 def graph(sensor):
     entity = db.collection('sensors').document(sensor).get()
     if entity.exists:
