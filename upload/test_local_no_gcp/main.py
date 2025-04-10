@@ -1,5 +1,5 @@
 
-from flask import Flask, request, redirect, url_for
+from flask import Flask, request, redirect, url_for, send_file
 import os
 from werkzeug.utils import secure_filename
 
@@ -9,6 +9,9 @@ app = Flask(__name__)
 def main():
     return 'ok'
 
+@app.route('/getfile',methods=['GET'])
+def getfile():
+    return send_file('files/test.jpg')
 
 @app.route('/upload',methods=['GET','POST'])
 def upload():
@@ -23,9 +26,11 @@ def upload():
         # submit a empty part without filename
         if file.filename == '':
             return redirect(request.url)
-        fname = secure_filename(file.filename) # opzionale
+        fname = file.filename
+        #fname = secure_filename(file.filename) # opzionale
         print(fname)
-        file.save(os.path.join('files',fname))
+        file.save(os.path.join('upload/test_local_no_gcp/files',fname))
+        #file.save(os.path.join('/tmp',fname))
         return 'saved '+fname
 
 

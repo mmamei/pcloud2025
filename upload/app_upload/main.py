@@ -28,8 +28,10 @@ def upload():
         print(fname)
         #file.save(os.path.join('tmp/',fname))
 
-        client = storage.Client.from_service_account_json('credentials.json')
-        bucket = client.bucket('upload-mamei-11')
+        client = storage.Client.from_service_account_json('upload/app_upload/credentials.json')
+        #client = storage.Client()
+
+        bucket = client.bucket('upload_pcloud2025')
         source_file_name = fname
         destination_blob_name = source_file_name
         blob = bucket.blob(destination_blob_name)
@@ -43,17 +45,17 @@ def upload():
 
 @app.route('/retrieve/<fname>',methods=['GET'])
 def retrieve(fname):
-    storage_client = storage.Client.from_service_account_json('credentials.json')
-    bucket = storage_client.bucket('upload-mamei-11')
+    storage_client = storage.Client.from_service_account_json('upload/app_upload/credentials.json')
+    bucket = storage_client.bucket('upload_pcloud2025')
     blob = bucket.blob(fname)
     blob.download_to_filename(os.path.join('tmp/',fname))
-    return send_file(os.path.join('tmp/',fname))
+    return send_file(os.path.join('../../tmp/',fname))
 
 
 @app.route('/retrieve2/<fname>',methods=['GET'])
 def retrieve2(fname):
-    storage_client = storage.Client.from_service_account_json('credentials.json')
-    bucket = storage_client.bucket('upload-mamei-11')
+    storage_client = storage.Client.from_service_account_json('upload/app_upload/credentials.json')
+    bucket = storage_client.bucket('upload_pcloud2025')
     blob = bucket.blob(fname)
     # https://cloud.google.com/storage/docs/access-control/signing-urls-with-helpers#code-samples
     serving_url = blob.generate_signed_url(
