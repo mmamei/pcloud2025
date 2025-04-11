@@ -2,13 +2,10 @@
 from flask import Flask, render_template, request, redirect, url_for
 import json
 
-
-
-
 from flask import Flask,redirect,url_for, request
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required, UserMixin
 from secret import secret_key
-from google.cloud import firestore
+from google.cloud import firestore, storage
 
 
 class User(UserMixin):
@@ -40,6 +37,9 @@ def load_user(username):
 
 db = 'test1'
 db = firestore.Client.from_service_account_json('riepilogo1/credentials.json', database=db)
+filestorage = storage.Client.from_service_account_json('riepilogo1/credentials.json')
+
+
 
 @app.route('/graph/<sensor>')
 @login_required
@@ -68,7 +68,23 @@ def read(sensor):
 
 @app.route('/sensorsfile/<sensor>',methods=['POST'])
 def new_file(sensor):
-    return 'ciao'
+    # check if the post request has the file part
+    if 'file' not in request.files:
+        return 'missing file', 400
+    file = request.files['file']
+    # if user does not select file, browser also
+    # submit a empty part without filename
+    if file.filename == '':
+        return 'missing file name', 400
+    
+    bucket = filestorage.bucket('upload_pcloud2025')
+    source_file_name = file.filename
+    destination_blob_name = f'{sensor}_{source_file_name}'
+    blob = bucket.blob(destination_blob_name)
+
+    blob.upload_from_string(file.read(),content_type=file.content_type)
+
+    return f'File {source_file_name} uploaded to {destination_blob_name}', 200
 
 # http get parameters
 @app.route('/sensors/<sensor>',methods=['POST'])
