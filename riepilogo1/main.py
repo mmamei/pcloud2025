@@ -65,6 +65,11 @@ def read(sensor):
     else:
         return 'not found', 404
 
+
+@app.route('/sensorsfile/<sensor>',methods=['POST'])
+def new_file(sensor):
+    return 'ciao'
+
 # http get parameters
 @app.route('/sensors/<sensor>',methods=['POST'])
 def new_data(sensor):
