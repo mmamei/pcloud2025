@@ -1,12 +1,13 @@
 
 from flask import Flask, render_template, request, redirect, url_for
 import json
-
+from joblib import load
 from flask import Flask,redirect,url_for, request
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required, UserMixin
 from secret import secret_key
 from google.cloud import firestore, storage
 import time
+from datetime import datetime, timedelta
 
 class User(UserMixin):
     def __init__(self, username):
@@ -51,16 +52,41 @@ def getmap():
     #time.sleep(10)
     return '[[[44.6,10.7],"sensor1"],[[44.5,10.8],"sensor2"],[[44.4,10.9],"sensor3"]]'
 
+def f_next_date(last_date):
+    data = datetime.strptime(last_date, "%Y-%m-%d %H:%M:%S")
+    # Calcolo del giorno successivo
+    next_date = data + timedelta(days=1)
+    # Conversione di nuovo in stringa
+    is_weekend = 1 if next_date.weekday() >= 5 else 0
+    return next_date.strftime("%Y-%m-%d %H:%M:%S"), is_weekend
+
+
 @app.route('/graph/<sensor>')
 @login_required
 def graph(sensor):
-    time.sleep(10)
+    #time.sleep(10)
     entity = db.collection('sensors').document(sensor).get()
     if entity.exists:
         x = entity.to_dict()['readings']
         x2 = []
         for d in x:
             x2.append([d['data'], d['val']])
+        
+        model = load('riepilogo1/models/model.joblib') 
+        y = []
+
+        next_date1, is_weekend1 = f_next_date(x2[-1][0])
+        history = [x2[-1][1],x2[-2][1],x2[-3][1],is_weekend1]
+        predictions =[model.predict([history])]
+        y.append([next_date1,float(predictions[0][0])])
+
+        next_date2, is_weekend2 = f_next_date(next_date1)
+        history = [y[-1][1],x2[-1][1],x2[-2][1],is_weekend2]
+        predictions =[model.predict([history])]
+        y.append([next_date2,float(predictions[0][0])])
+
+
+        x2 = x2 + y
         x = str(x2)
         return render_template('graph.html', data=x, sensor=sensor)    
     else:
