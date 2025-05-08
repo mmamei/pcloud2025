@@ -6,7 +6,7 @@ from flask import Flask,redirect,url_for, request
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required, UserMixin
 from secret import secret_key
 from google.cloud import firestore, storage
-
+import time
 
 class User(UserMixin):
     def __init__(self, username):
@@ -24,16 +24,14 @@ login = LoginManager(app)
 login.login_view = '/static/login.html'
 
 
-usersdb = {
-    'marco':'mamei'
-}
+
 
 @login.user_loader
 def load_user(username):
-    if username in usersdb:
+    entity = db.collection('users').document(username).get()
+    if entity.exists:
         return User(username)
     return None
-
 
 db = 'test1'
 db = firestore.Client.from_service_account_json('riepilogo1/credentials.json', database=db)
@@ -47,15 +45,16 @@ def main():
 
 
 
-
 @app.route('/getmap')
 @login_required
 def getmap():
+    #time.sleep(10)
     return '[[[44.6,10.7],"sensor1"],[[44.5,10.8],"sensor2"],[[44.4,10.9],"sensor3"]]'
 
 @app.route('/graph/<sensor>')
 @login_required
 def graph(sensor):
+    time.sleep(10)
     entity = db.collection('sensors').document(sensor).get()
     if entity.exists:
         x = entity.to_dict()['readings']
@@ -121,12 +120,16 @@ def login():
         return redirect('/main')
     username = request.values['u']
     password = request.values['p']
-    next_page = request.values['next']
-    if username in usersdb and password == usersdb[username]:
-        login_user(User(username))
-        if not next_page:
-            next_page = '/main'
-        return redirect(next_page)
+    next_page = request.values.get('next', '/main')
+    
+    # Access Firestore to validate the user
+    entity = db.collection('users').document(username).get()
+    if entity.exists:
+        user_data = entity.to_dict()
+        if user_data.get('password') == password:
+            login_user(User(username))
+            return redirect(next_page)
+    
     return redirect('/static/login.html')
 
 @app.route('/logout')
