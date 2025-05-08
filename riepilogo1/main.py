@@ -40,6 +40,18 @@ db = firestore.Client.from_service_account_json('riepilogo1/credentials.json', d
 filestorage = storage.Client.from_service_account_json('riepilogo1/credentials.json')
 
 
+@app.route('/')
+@login_required
+def main():
+    return redirect('/static/map.html')
+
+
+
+
+@app.route('/getmap')
+@login_required
+def getmap():
+    return '[[[44.6,10.7],"sensor1"],[[44.5,10.8],"sensor2"],[[44.4,10.9],"sensor3"]]'
 
 @app.route('/graph/<sensor>')
 @login_required

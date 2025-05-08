@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<!--
+	Paradigm Shift by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Paradigm Shift by HTML5 UP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"/>
+		<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.scrolly.min.js"></script>
+		<script src="assets/js/browser.min.js"></script>
+		<script src="assets/js/breakpoints.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<!-- 	-->
+		<script>
+			
+			$(document).ready(function(){
+				// https://storage.googleapis.com/connessioni.appspot.com/map.json
+				var map = L.map('mapid').setView([44.6,10.7], 8);
+				L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+				//new L.Polyline([new L.LatLng(51.5, -0.09), new L.LatLng(51.4, -0.09), new L.LatLng(51.4, -0.19)], {color: 'red',weight: 3,opacity: 0.5,smoothFactor: 1}).addTo(map)
+				
+				// data = [
+				// [[44.6,10.7],'sensor1'],
+				// [[44.5,10.8],'sensor2'],
+				// [[44.4,10.9],sensor3],
+				// ]
+
+				$.get("/getmap",function(data, status){
+					console.log(data)
+					data = JSON.parse(data)
+					map.setView(data[0][0], 12)
+					for(p of data) {
+						console.log(p)
+						L.marker(p[0]).addTo(map).bindPopup('<a href="/graph/'+p[1]+'">'+p[1]+'</a>')
+					}
+				});
+
+			})
+		</script>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Intro -->
+					<section class="intro">
+						<header>
+							<h1>Map</h1>
+							<p>A free responsive site template designed by <a href="https://twitter.com/ajlkn">@ajlkn</a> / <a href="https://html5up.net">HTML5 UP</a></p>
+							<ul class="actions">
+								<li><a href="#first" class="arrow scrolly"><span class="label">Next</span></a></li>
+							</ul>
+						</header>
+						<div class="content">
+							<p><br><br><br><br><br><br><strong>Map</strong></p>
+							
+							<div id="mapid" style="width: 600px; height: 400px;"></div>
+							
+							
+						</div>
+					</section>
+
+				<!-- Section -->
+					
+
+				<!-- Section -->
+					
+
+				<!-- Section -->
+					
+
+				<!-- Section -->
+					
+
+				
+				<!-- Section -->
+					
+
+				<!-- Copyright -->
+					<div class="copyright">&copy; Untitled. All rights reserved. Design: <a href="https://html5up.net">HTML5 UP</a>.</div>
+
+			</div>
+
+		<!-- Scripts -->
+		<script src="assets/js/main.js"></script>
+	</body>
+</html>
