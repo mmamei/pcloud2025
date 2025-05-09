@@ -3,7 +3,7 @@ from secret import project_id,topic_name
 from google.auth import jwt
 import  json
 
-service_account_info = json.load(open("credentials.json"))
+service_account_info = json.load(open("pubsub/pubsub_app/credentials.json"))
 audience = "https://pubsub.googleapis.com/google.pubsub.v1.Publisher"
 credentials = jwt.Credentials.from_service_account_info(
     service_account_info, audience=audience
@@ -18,5 +18,5 @@ except Exception as e:
     print(e)
 
 
-r = publisher.publish(topic_path,b'message 1',key1='marco',key2='mamei')
+r = publisher.publish(topic_path,b'message X',key1='marco',key2='mamei')
 print(r.result())
