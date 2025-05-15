@@ -1,0 +1,14 @@
+<html>
+    <body>
+        ciao
+    </body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        url = 'https://europe-west8-pcloud2025.cloudfunctions.net/hello_http'
+        $.post(url,{'name':'marco'},
+                function(data,status){
+                    console.log(data)
+               })
+    </script>
+
+</html>
