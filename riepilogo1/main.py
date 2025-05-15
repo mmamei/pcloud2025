@@ -44,7 +44,10 @@ filestorage = storage.Client.from_service_account_json('riepilogo1/credentials.j
 def main():
     return redirect('/static/map.html')
 
-
+@app.route('/phone')
+@login_required
+def phone():
+    return redirect('/static/acceleration_w_upload.html')
 
 @app.route('/getmap')
 @login_required
@@ -102,6 +105,25 @@ def read(sensor):
     else:
         return 'not found', 404
 
+cont = 1
+@app.route('/phone/<phone>',methods=['POST'])
+def phone_data(phone):
+    global cont
+    val = float(request.values['val'])
+    print(val)
+    data = f'2025-5-{cont} 12:00:00'
+    cont += 1
+    entity = db.collection('sensors').document(phone).get()
+    if entity.exists:
+        d = entity.to_dict()
+        d['readings'].append({'data':data, 'val':val})
+        db.collection('sensors').document(phone).set(d)
+    else:
+        db.collection('sensors').document(phone).set({'readings':[{'data':data, 'val':val}]})
+    return 'ok', 200
+
+
+    return 'ok', 200
 
 @app.route('/sensorsfile/<sensor>',methods=['POST'])
 def new_file(sensor):
@@ -165,5 +187,5 @@ def logout():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080, debug=True)
+    app.run(host='0.0.0.0', port=8080, debug=True, ssl_context='adhoc')
 
