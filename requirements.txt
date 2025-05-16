@@ -16,3 +16,7 @@ matplotlib
 scikit-learn
 plotly
 
+google-cloud-aiplatform
+google-cloud-texttospeech
+google-genai
+
