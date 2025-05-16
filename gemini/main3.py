@@ -8,8 +8,8 @@ client = texttospeech.TextToSpeechClient()
 
 # Set the text input to be synthesized
 
-txt = '''L'immagine è una foto in un ambiente urbano con diversi edifici sullo sfondo. Nel mezzo, c'è un uomo, probabilmente sulla cinquantina, vestito con una camicia bianca a maniche lunghe, jeans e una cintura di pelle nera. Sta sorridendo alla telecamera e tiene in mano una giacca grigia.
-Alla sua sinistra si vede un'auto dal design futuristico, una Tesla Cybertruck, in tinta argentata. Intorno all'auto e all'uomo ci sono delle barriere nere per tenere lontana la folla.'''
+txt = '''L'immagine mostra un uomo in piedi di fronte a una Tesla Cybertruck in una piazza cittadina. Sopra ci sono degli ombrelli colorati appesi.
+'''
 
 synthesis_input = texttospeech.SynthesisInput(text=txt)
 

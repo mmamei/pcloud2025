@@ -9,7 +9,7 @@ function gotMedia(mediaStream) {
   const imageCapture = new ImageCapture(mediaStreamTrack);
   //console.log(imageCapture);
 
-  var ready_to_send = false
+  var ready_to_send = true
   var count = 0
   function capture() {
     imageCapture.takePhoto().then(blob => {
@@ -24,18 +24,15 @@ function gotMedia(mediaStream) {
             fd.append('file', blob, 'screenshot.png');
             $.ajax({
                 type: 'POST',
-                url: '/upload?time='+new Date().getTime(),
+                url: 'https://europe-west8-pcloud2025.cloudfunctions.net/main_describe_photo',
                 data: fd,
                 processData: false,
                 contentType: false,
             }).done(function(data) {
                 data = JSON.parse(data)
-                file = data[0]
-                data = data[1]
-                console.log(data);
-                $('#txt').html(data)
+                $('#txt').html('ok')
                 var audio = new Audio();
-                audio.src = file
+                audio.src = audio.src = "data:audio/mp3;base64," + data.audio_base64
                 audio.play()
                 audio.addEventListener("ended", function(){
                     myAudio.currentTime = 0;

@@ -9,13 +9,13 @@ os.environ['GOOGLE_GENAI_USE_VERTEXAI'] = 'True'
 
 client = genai.Client(http_options=HttpOptions(api_version="v1"))
 
-prompt = "Cosa è rappresentato nell'immagine?"
+prompt = "Quante persone ci sono nell'immagine? Rispondi con solo un nuemero"
 
 client = genai.Client(http_options=HttpOptions(api_version="v1"))
 response = client.models.generate_content(
     model="gemini-2.0-flash-001",
     contents=[
-        "Descrivi l'immagine",
+        prompt,
         Part.from_uri(
             file_uri="gs://upload_pcloud2025/cyber.jpg",
             mime_type="image/jpeg",
