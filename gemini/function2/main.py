@@ -65,7 +65,11 @@ def main_describe_photo(request):
 
     encoded_audio = base64.b64encode(audio_content).decode('utf-8')
 
-    return jsonify({'audio_base64': encoded_audio})
+    headers = {
+        'Access-Control-Allow-Origin': '*'
+    }
+
+    return (jsonify({'audio_base64': encoded_audio}), 200, headers)
 
 
     
